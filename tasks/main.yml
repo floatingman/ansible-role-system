@@ -1,0 +1,32 @@
+---
+# tasks file for ansible-role-system
+#- name: Allow sudo without password
+#  become: yes
+#  lineinfile:
+#    dest: /etc/sudoers
+#    state: present
+#    line: "{{ ansible_user_id }}	ALL=NOPASSWD: ALL"
+#    insertafter: '^%admin\tALL=\(ALL\) ALL'
+#    validate: "visudo -cf %s"
+#  when: sudo_without_password and ansible_os_family == "Darwin"
+
+- name: Check if original hosts backup file exists
+  stat:
+    path: "{{ hosts_backup }}"
+  register: stat_result
+
+- name: Backup original hosts file
+  become: yes
+  copy:
+    src: "{{ hosts_path }}"
+    path: "{{ hosts_backup }}"
+  when: not stat_result.stat.exists
+
+- name: Set hosts file
+  become: yes
+  get_url:
+    force: yes
+    url: "{{ hosts_url }}"
+    dest: "{{ hoss_path }}"
+    group: root
+    owner: root

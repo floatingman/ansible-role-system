@@ -1,0 +1,4 @@
+---
+# vars file for ansible-role-system
+hosts_path: "/etc/hosts"
+hosts_backup: "/etc/hosts.original"
