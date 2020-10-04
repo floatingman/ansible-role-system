@@ -16,6 +16,7 @@ ansible-role-system
 | Variable| Description | default |
 |---------|-------------|---------|
 | hosts_pack | which hosts pack to use from energized | spark |
+| thinkpad | Thinkpad specific settings|  |
 
 Dependencies
 ------------
@@ -32,6 +33,7 @@ Example Playbook
   connection: local
     pre_tasks:
         hosts_pack: basic
+        thinkpad: true
   roles:
     - ansible-role-system
 ```

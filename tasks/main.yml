@@ -46,3 +46,6 @@
     group: root
     owner: root
   when: not hosts_pack == "none"
+
+- include_tasks: thinkpad.yml
+  when: thinpad == true
