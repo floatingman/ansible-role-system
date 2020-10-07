@@ -50,7 +50,7 @@
 - name: copy udev rule for ergoxox keyboard
   become: yes
   copy:
-    src: "{{ role_path }}/files/50-wally-rules"
+    src: "{{ role_path }}/files/50-wally.rules"
     dest: /etc/udev/rules.d/50-wally.rules
     owner: root
     group: root
