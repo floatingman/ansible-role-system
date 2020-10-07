@@ -17,6 +17,7 @@ ansible-role-system
 |---------|-------------|---------|
 | hosts_pack | which hosts pack to use from energized | spark |
 | thinkpad | Thinkpad specific settings|  |
+| user | to add to plugdev group for ergodox rule | |
 
 Dependencies
 ------------
@@ -34,6 +35,7 @@ Example Playbook
     pre_tasks:
         hosts_pack: basic
         thinkpad: true
+        user: michael
   roles:
     - ansible-role-system
 ```

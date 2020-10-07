@@ -47,5 +47,24 @@
     owner: root
   when: not hosts_pack == "none"
 
+- name: copy udev rule for ergoxox keyboard
+  become: yes
+  copy:
+    src: "{{ role_path }}/files/50-wally-rules"
+    dest: /etc/udev/rules.d/50-wally.rules
+    owner: root
+    group: root
+
+- name: Add plugdev group
+  group:
+    name: plugdev
+    state: present
+
+- name: adding existing "{{ user }}" to group plugdev
+  user:
+    name: "{{ user }}"
+    groups: plugdev
+    append: yes
+
 - include_tasks: thinkpad.yml
   when: thinkpad == true
