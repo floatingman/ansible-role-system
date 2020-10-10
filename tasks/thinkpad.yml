@@ -11,9 +11,10 @@
     params: synaptics_intertouch=1
     state: present
 
-#- name: persist trackpoint sleep workaround
-#  copy:
-#    src: "{{ role_path }}/files/psmouse"
-#    dest: /etc/modprobe.d/psmouse.conf
-#    owner: root
-#    group: root
+- name: persist trackpoint sleep workaround
+  become: yes
+  copy:
+    src: "{{ role_path }}/files/psmouse"
+    dest: /etc/modprobe.d/psmouse.conf
+    owner: root
+    group: root
