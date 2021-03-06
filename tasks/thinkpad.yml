@@ -1,20 +1,29 @@
-- name: copy trackpoint conf
-  copy:
-    src: "{{ role_path }}/files/20-trackpoint.conf"
-    dest: /etc/X11/xorg.conf.d/20-trackpoint.conf
-    owner: root
-    group: root
+#- name: copy trackpoint conf
+#  copy:
+#    src: "{{ role_path }}/files/20-trackpoint.conf"
+#    dest: /etc/X11/xorg.conf.d/20-trackpoint.conf
+#    owner: root
+#    group: root
 
-- name: trackpoint sleep workaround 2
-  modprobe:
-    name: psmouse
-    params: synaptics_intertouch=1
-    state: present
+#- name: trackpoint sleep workaround 2
+#  modprobe:
+#    name: psmouse
+#    params: synaptics_intertouch=1
+#    state: present
 
-- name: persist trackpoint sleep workaround
+#- name: persist trackpoint sleep workaround
+#  become: yes
+#  copy:
+#    src: "{{ role_path }}/files/psmouse"
+#    dest: /etc/modprobe.d/psmouse.conf
+#    owner: root
+#    group: root
+
+- name: trackpoint workaroud
   become: yes
-  copy:
-    src: "{{ role_path }}/files/psmouse"
-    dest: /etc/modprobe.d/psmouse.conf
-    owner: root
-    group: root
+  lineinfile:
+    state: present
+    backrefs: yes
+    dest: /etc/defult/grub
+    regexp: 'GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 psmouse.synaptics_intertouch=1"'
