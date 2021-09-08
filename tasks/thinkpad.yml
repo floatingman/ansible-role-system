@@ -19,11 +19,11 @@
 #    owner: root
 #    group: root
 
-- name: trackpoint workaroud
-  become: yes
-  lineinfile:
-    state: present
-    backrefs: yes
-    dest: /etc/defult/grub
-    regexp: 'GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 psmouse.synaptics_intertouch=1"'
+# - name: trackpoint workaroud
+#   become: yes
+#   lineinfile:
+#     state: present
+#     backrefs: yes
+#     dest: /etc/defult/grub
+#     regexp: 'GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
+#     line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 psmouse.synaptics_intertouch=1"'
