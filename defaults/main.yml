@@ -1,4 +1,3 @@
 ---
 # defaults file for ansible-role-system
-hosts_pack: spark
 hosts_url: "https://block.energized.pro/{{ hosts_pack }}/formats/hosts"

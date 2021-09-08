@@ -37,33 +37,35 @@
     state: absent
   when: stat_result.stat.exists and hosts_pack == "none"
 
-# - name: Set hosts file
-#   become: yes
-#   get_url:
-#     force: yes
-#     url: "{{ hosts_url }}"
-#     dest: "{{ hosts_path }}"
-#     group: root
-#     owner: root
-#   when: not hosts_pack == "none"
+- name: Set hosts file
+  become: yes
+  get_url:
+    force: yes
+    url: "{{ hosts_url }}"
+    dest: "{{ hosts_path }}"
+    group: root
+    owner: root
+  when: not hosts_pack == "none"
 
-# - name: copy udev rule for ergoxox keyboard
-#   become: yes
-#   copy:
-#     src: "{{ role_path }}/files/50-wally.rules"
-#     dest: /etc/udev/rules.d/50-wally.rules
-#     owner: root
-#     group: root
+- name: copy udev rule for ergodox keyboard
+  become: yes
+  copy:
+    src: "{{ role_path }}/files/50-wally.rules"
+    dest: /etc/udev/rules.d/50-wally.rules
+    owner: root
+    group: root
 
 - name: Add plugdev group
+  become: yes
   group:
     name: plugdev
     state: present
 
 - name: adding existing "{{ user }}" to group plugdev
+  become: yes
   user:
     name: "{{ user }}"
-    groups: plugdev
+    groups: ["plugdev"]
     append: yes
 
 - include_tasks: thinkpad.yml
