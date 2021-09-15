@@ -1,46 +1,40 @@
-Role Name
-=========
+# Role Name
 
-This role installs a host file based (DNS) blocking based upon [energized](https://energized.pro/). The original hosts file is backed up to `/etc/hosts.original` and can be restored by running the role with `hosts_pack: none` again.
+This role configures several tasks at the OS level
 
-Have a look at [packs](https://block.energized.pro/) for an overview of available packs and their features.
+- installs a host file based (DNS) blocking based upon [energized](https://energized.pro/). The original hosts file is backed up to `/etc/hosts.original` and can be restored by running the role with `hosts_pack: none` again. Have a look at [packs](https://block.energized.pro/) for an overview of available packs and their features.
 
-Requirements
-------------
+- installs udev rules for an [Ergodox EZ](https://knowledge.rootknecht.net/ergodox-ez) keyboard
+
+- allows sudo permissions without password
+
+- configures Thinkpad related settings
+
+## Test
+
+Run `molecule test` to test this role via docker
+
+## Requirements
 
 - Sudo permission
 
-ansible-role-system
---------------
+## ansible-role-system
 
-| Variable| Description | default |
-|---------|-------------|---------|
-| hosts_pack | which hosts pack to use from energized | spark |
-| thinkpad | Thinkpad specific settings|  |
-| user | to add to plugdev group for ergodox rule | |
+| Variable              | Description                                   | default |
+| --------------------- | --------------------------------------------- | ------- |
+| hosts_pack            | if and which hosts pack to use from energized | false   |
+| thinkpad              | Thinkpad specific settings                    | false   |
+| ergodox               | enable udev rule for ergodx keyboards         | false   |
+| sudo_without_password | Allow sudo withput password                   | false   |
 
-Dependencies
-------------
+## Dependencies
 
 No dependencies
 
-Example Playbook
-----------------
+## Example Playbook
 
-```
----
-- name: Playbook
-  hosts: localhost
-  connection: local
-    pre_tasks:
-        hosts_pack: basic
-        thinkpad: true
-        user: michael
-  roles:
-    - ansible-role-system
-```
+See [converge.yaml](https://github.com/Allaman/ansible-role-system/tree/master/molecule/default/converge.yml)
 
-License
--------
+## License
 
 MIT

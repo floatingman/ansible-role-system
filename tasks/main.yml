@@ -1,59 +1,36 @@
 ---
 # tasks file for ansible-role-system
-#- name: Allow sudo without password
-#  become: yes
-#  lineinfile:
-#    dest: /etc/sudoers
-#    state: present
-#    line: "{{ ansible_user_id }}	ALL=NOPASSWD: ALL"
-#    insertafter: '^%admin\tALL=\(ALL\) ALL'
-#    validate: "visudo -cf %s"
-#  when: sudo_without_password and ansible_os_family == "Darwin"
-
-- name: Check if original hosts backup file exists
-  stat:
-    path: "{{ hosts_backup }}"
-  register: stat_result
-
-- name: Backup original hosts file
+- name: Allow sudo without password
   become: yes
-  copy:
-    src: "{{ hosts_path }}"
-    dest: "{{ hosts_backup }}"
-    force: yes
-  when: not stat_result.stat.exists and not hosts_pack == "none"
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{ ansible_user_id }}	ALL=NOPASSWD: ALL"
+    insertafter: '^%admin\tALL=\(ALL\) ALL'
+    validate: "visudo -cf %s"
+  when: sudo_without_password|default(false) == true
 
-- name: Restore original hosts file
-  become: yes
-  copy:
-    src: "{{ hosts_backup }}"
-    dest: "{{ hosts_path }}"
-  when: stat_result.stat.exists and hosts_pack == "none"
-
-- name: Delete backup of original hosts file
-  become: yes
+- name: Ensures /etc/keyd/ exists
   file:
-    path: "{{ hosts_backup }}"
-    state: absent
-  when: stat_result.stat.exists and hosts_pack == "none"
+    path: /etc/keyd
+    state: directory
 
-- name: Set hosts file
+- name: Copy keyd config file
   become: yes
-  get_url:
-    force: yes
-    url: "{{ hosts_url }}"
-    dest: "{{ hosts_path }}"
-    group: root
+  copy:
+    src: "{{ role_path }}/files/etc/keyd/default.cfg"
+    dest: /etc/keyd/default.cfg
     owner: root
-  when: not hosts_pack == "none"
+    group: root
 
-- name: copy udev rule for ergodox keyboard
+- name: Copy udev rule for ergodox keyboard
   become: yes
   copy:
     src: "{{ role_path }}/files/50-wally.rules"
     dest: /etc/udev/rules.d/50-wally.rules
     owner: root
     group: root
+  when: ergodox_keyboard|default(false) == true
 
 - name: Add plugdev group
   become: yes
@@ -61,12 +38,15 @@
     name: plugdev
     state: present
 
-- name: adding existing "{{ user }}" to group plugdev
+- name: adding existing "{{ ansible_user_id }}" to group plugdev
   become: yes
   user:
-    name: "{{ user }}"
+    name: "{{ ansible_user_id }}"
     groups: ["plugdev"]
     append: yes
 
 - include_tasks: thinkpad.yml
-  when: thinkpad == true
+  when: thinkpad|default(false) == true
+
+- include_tasks: hosts.yml
+  when: hosts_pack|default(false) != "none"

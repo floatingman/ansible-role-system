@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    hosts_pack: spark
+    thinkpad: true
+    sudo_without_password: true
+    ergodox: true
+  tasks:
+    - name: "Include ansible-role-system"
+      include_role:
+        name: "ansible-role-system"
