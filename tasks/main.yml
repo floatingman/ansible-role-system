@@ -11,6 +11,7 @@
   when: sudo_without_password|default(false) == true
 
 - name: Ensures /etc/keyd/ exists
+  become: yes
   file:
     path: /etc/keyd
     state: directory
