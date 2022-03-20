@@ -30,7 +30,7 @@
     use: auto
     state: present
   become: yes
-  become_user: {{ ansible_user_id }}
+  become_user: "{{ ansible_user_id }}"
 
 - name: Enable and start keyd service
   service:
