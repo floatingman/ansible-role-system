@@ -24,6 +24,20 @@
     owner: root
     group: root
 
+- name: Install keyd-git
+  aur:
+    name: keyd-git
+    use: auto
+    state: present
+  become: yes
+  become_user: {{ ansible.user }}
+
+- name: Enable and start keyd service
+  service:
+    name: keyd
+    state: started
+    enabled: yes
+
 - name: Copy udev rule for ergodox keyboard
   become: yes
   copy:
