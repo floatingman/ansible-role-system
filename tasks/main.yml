@@ -16,14 +16,6 @@
     path: /etc/keyd
     state: directory
 
-- name: Copy keyd config file
-  become: yes
-  copy:
-    src: "keyd_default.conf"
-    dest: /etc/keyd/default.conf
-    owner: root
-    group: root
-
 - name: Install keyd-git
   aur:
     name: keyd-git
@@ -37,6 +29,16 @@
     name: keyd
     state: started
     enabled: yes
+
+- name: Copy keyd config file
+  become: yes
+  copy:
+    src: "keyd_default.conf"
+    dest: /etc/keyd/default.conf
+    owner: root
+    group: root
+  notify:
+    - reload systemd config
 
 - name: Copy udev rule for ergodox keyboard
   become: yes
