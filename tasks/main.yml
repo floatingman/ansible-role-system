@@ -40,6 +40,16 @@
   notify:
     - reload systemd config
 
+- name: Install hdparm
+  pacman:
+    name: hdparm
+    state: present
+
+- name: Enable and start weekly filesystem TRIM timer
+  service:
+    name: fstrem.timer
+    enabled: yes
+
 - name: Copy udev rule for ergodox keyboard
   become: yes
   copy:
