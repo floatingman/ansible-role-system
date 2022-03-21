@@ -19,7 +19,7 @@
 - name: Copy keyd config file
   become: yes
   copy:
-    src: "{{ role_path }}/files/etc/keyd/default.conf"
+    src: "keyd_default.conf"
     dest: /etc/keyd/default.conf
     owner: root
     group: root
