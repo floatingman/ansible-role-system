@@ -24,14 +24,14 @@
     state: present
   become: yes
   become_user: "{{ ansible_user_id }}"
-  when: ansible_facts["distribution"] = "Archlinux"
+  when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Enable and start keyd service
   service:
     name: keyd
     state: started
     enabled: yes
-  when: ansible_facts["distribution"] = "Archlinux"
+  when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Copy keyd config file
   become: yes
@@ -42,19 +42,19 @@
     group: root
   notify:
     - reload systemd config
-  when: ansible_facts["distribution"] = "Archlinux"
+  when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Install hdparm
   pacman:
     name: hdparm
     state: present
-  when: ansible_facts["distribution"] = "Archlinux"
+  when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Enable and start weekly filesystem TRIM timer
   service:
     name: fstrim.timer
     enabled: yes
-  when: ansible_facts["distribution"] = "Archlinux"
+  when: ansible_facts["distribution"] == "Archlinux"
 
 
 - name: Copy udev rule for ergodox keyboard
