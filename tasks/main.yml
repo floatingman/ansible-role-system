@@ -56,7 +56,6 @@
     enabled: yes
   when: ansible_facts["distribution"] == "Archlinux"
 
-
 - name: Copy udev rule for ergodox keyboard
   become: yes
   copy:
