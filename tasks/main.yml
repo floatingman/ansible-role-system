@@ -31,6 +31,7 @@
     name: keyd
     state: started
     enabled: yes
+  become: yes
   when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Copy keyd config file
@@ -52,35 +53,11 @@
   when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Enable and start weekly filesystem TRIM timer
+  become: yes
   service:
     name: fstrim.timer
     enabled: yes
   when: ansible_facts["distribution"] == "Archlinux"
-
-- name: Copy udev rule for ergodox keyboard
-  become: yes
-  copy:
-    src: "{{ role_path }}/files/50-wally.rules"
-    dest: /etc/udev/rules.d/50-wally.rules
-    owner: root
-    group: root
-  when: ergodox_keyboard|default(false) == true
-
-- name: Add plugdev group
-  become: yes
-  group:
-    name: plugdev
-    state: present
-
-- name: adding existing "{{ ansible_user_id }}" to group plugdev
-  become: yes
-  user:
-    name: "{{ ansible_user_id }}"
-    groups: ["plugdev"]
-    append: yes
-
-- include_tasks: thinkpad.yml
-  when: thinkpad|default(false) == true
 
 - include_tasks: hosts.yml
   when: hosts_pack|default(false) != "none"
